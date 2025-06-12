@@ -17,3 +17,22 @@ void IPCalculator::parseIp(const QString& ip) {
 }
 }
 
+std::vector<QString> IPCalculator::calculateSubnets() {
+    std::vector<QString> result;
+    int hostBits = 32 - subnetMask;
+    int numSubnets = 1 << hostBits;
+
+    for (int i = 0; i < numSubnets && i < 10; ++i) {
+        std::bitset<32> subnet = ipBinary;
+        subnet |= std::bitset<32>(i);
+        QString ip;
+        for (int j = 3; j>= 0; --j) {
+            ip += QString::number((subnet.to_ulong()>> (j * 8)) & 0xFF);
+            if (j!= 0) ip += ".";
+}
+        result.push_back(ip);
+}
+    return result;
+}
+
+
